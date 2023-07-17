@@ -91,16 +91,22 @@ class ExpositionController{
     }
 
     static async getAll(req, res){
-        Exposition.find({})
-        .then(response => {
-            console.log(response.length + "Exposition(s) trouvée(s).")
-            res.status(200).json({msg: response.length==0 ? "Aucune exposition n'a été trouvée" : response.length == 1 ? `${response.length} exposition a été trouvée` : `${response.length} expositions ont été trouvées`, data: response})
-        })
-        .catch(error => {
+        try{
+            Exposition.find({})
+                .populate('user_id')
+                .then(response => {
+                    console.log(response.length + "Exposition(s) trouvée(s).")
+                    res.status(200).json({msg: response.length==0 ? "Aucune exposition n'a été trouvée" : response.length == 1 ? `${response.length} exposition a été trouvée` : `${response.length} expositions ont été trouvées`, data: response})
+                })
+                .catch(error => {
+                    console.log("L'url invalide, veuillez donc réessayer avc le bon url !", error.message);
+                    res.status(401).json({msg: "L'url invalide, veuillez donc réessayer avc le bon url !"});
+                })
+        }catch (error) {
             console.log("L'url invalide, veuillez donc réessayer avc le bon url !", error.message);
-            res.status(401).json({msg: "L'url invalide, veuillez donc réessayer avc le bon url !", error: error.message});
-        })
-        
+            res.status(401).json({msg: "L'url invalide, veuillez donc réessayer avc le bon url !"});
+        }
+
     }
 
     /**
