@@ -21,7 +21,7 @@ class LikeController{
                     Like.find({exposition: [req.body.exposition]})
                     .then(lik => {
                         if(lik.length > 0){
-                            if(lik.every(item => item.auteur[0] != req.auth.user_id)){
+                            if(lik.every(item => item.commentateur[0] != req.auth.user_id)){
                                 const likk = new Like({...req.body});
                                 likk.save()
                                 .then(ok => {
@@ -59,6 +59,49 @@ class LikeController{
         } catch (error) {
             res.status(500).json({msg:"Une erreur est survenue lors de l'enregistrememnt", error: error.message})
         }        
+    }
+
+    /**
+     *
+     * @static
+     * @param {Express.Request} req
+     * @param {Express.Response} res
+     * @memberof likeController
+     */
+    static  async getLikeByCommentateur(req, res){
+        try{
+            User.findOne({_id:req.auth.user_id, email: req.auth.user_email})
+            .then(auth => {
+                if (!auth) {
+                    console.log("Vous n'êtes pas autorisé à effectuer cette requête, chercher à vous authentifier.");
+                    res.status(400).json({msg: "Vous n'êtes pas autorisé à effectuer cette requête, chercher à vous authentifier."});
+                } else {
+                    Like.find({commentateur: [req.params.commentateur]})
+                    .populate(
+                        {
+                            path:"exposition",
+                            populate:{
+                                path: "user_id"
+                            }
+                        }
+                    )
+                    .then(succes => {
+                        res.status(200).json({msg: "Requête réussie", data : succes})
+                    })
+                    .catch(error => {
+                        console.log("Une érreur est survenue lors de la sélection.", error);
+                        res.status(400).json({msg: "Aucune donnée n'est trouvée.", error: error.message})
+                    })
+                }
+            })
+            .catch(error => {
+                console.log("Une érreur est survenue lors de la sélection.", error);
+                res.status(400).json({msg: "Aucune donnée n'est trouvée.", error: error.message})
+            })
+        }catch (error) {
+            console.log("Une érreur est survenue lors de la sélection.", error);
+            res.status(500).json({msg:"Aucune donnée n'est trouvée.", error: error.message})
+        }
     }
 }
 

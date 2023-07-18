@@ -1,6 +1,8 @@
 const Exposition = require("../models/expositionModel");
 const User = require("../models/userModel");
 const Domaine = require("../models/domaineModel");
+const Like = require("../models/lileModel");
+const Commentaire = require("../models/commentaireModel");
 
 class ExpositionController{
     /**
@@ -81,7 +83,14 @@ class ExpositionController{
         Exposition.find({user_id: [req.params.user_id]})
         .then(response => {
             console.log(response.length + "Exposition(s) trouvée(s).")
-            res.status(200).json({msg: response.length==0 ? "Aucune exposition n'a été trouvée" : response.length == 1 ? `${response.length}  exposition a été trouvée` : `${response.length} expositions ont été trouvées`, data: response})
+            Commentaire.find({})
+                .then(comment => {
+                    Like.find({})
+                        .then(like => {
+                            res.status(200).json({msg: response.length==0 ? "Aucune exposition n'a été trouvée" : response.length == 1 ? `${response.length}  exposition a été trouvée` : `${response.length} expositions ont été trouvées`, data: response, comment:comment, like: like})
+                        })
+                    })
+
         })
         .catch(error => {
             console.log("L'url invalide, veuillez donc réessayer avc le bon url !", error);
@@ -95,9 +104,15 @@ class ExpositionController{
             Exposition.find({})
                 .populate('user_id')
                 .then(response => {
-                    console.log(response.length + "Exposition(s) trouvée(s).")
-                    res.status(200).json({msg: response.length==0 ? "Aucune exposition n'a été trouvée" : response.length == 1 ? `${response.length} exposition a été trouvée` : `${response.length} expositions ont été trouvées`, data: response})
-                })
+                    Commentaire.find({})
+                        .then(comment => {
+                            Like.find({})
+                            .then(like => {
+                                console.log(response.length + "Exposition(s) trouvée(s).")
+                                res.status(200).json({msg: response.length==0 ? "Aucune exposition n'a été trouvée" : response.length == 1 ? `${response.length} exposition a été trouvée` : `${response.length} expositions ont été trouvées`, data: response, comment: comment, like: like});
+                            })
+                        })
+                    })
                 .catch(error => {
                     console.log("L'url invalide, veuillez donc réessayer avc le bon url !", error.message);
                     res.status(401).json({msg: "L'url invalide, veuillez donc réessayer avc le bon url !"});

@@ -75,7 +75,7 @@ class commentaireContoller{
                 }
             })
             .catch(error => {
-                console.log("Une érreur est survenue lors de la sélection des commentaires.");
+                console.log("Une érreur est survenue lors de la sélection des commentaires.", error);
                 res.status(400).json({msg: "Mot de passe ou email incorrect.", error: error.message})
             })
 
@@ -109,7 +109,7 @@ class commentaireContoller{
                     }
                 })
                 .catch(error => {
-                    console.log("Une érreur est survenue lors de la sélection des commentaires.");
+                    console.log("Une érreur est survenue lors de la sélection des commentaires.", error);
                     res.status(400).json({msg: "Mot de passe ou email incorrect.", error: error.message})
                 })
 
@@ -150,7 +150,7 @@ class commentaireContoller{
                     }
                 })
                 .catch(error => {
-                    console.log("Une érreur est survenue lors de la sélection des commentaires.");
+                    console.log("Une érreur est survenue lors de la sélection des commentaires.", error);
                     res.status(400).json({msg: "Mot de passe ou email incorrect.", error: error.message})
                 })
 
@@ -167,6 +167,7 @@ class commentaireContoller{
      * @memberof commentaireContoller
      */
     static  async update(req, res){
+        console.log("----------------------------------------------------------------------------")
         try{
             User.findOne({_id:req.auth.user_id, email: req.auth.user_email})
             .then(auth => {
@@ -186,19 +187,19 @@ class commentaireContoller{
                                 })
                             })
                             .catch(error => {
-                                console.log("Une érreur est survenue lors de la sélection des commentaires.");
+                                console.log("Une érreur est survenue lors de la sélection des commentaires.", error);
                                 res.status(400).json({msg: "Mot de passe ou email incorrect.", error: error.message})
                             })
                         }
                     })
                     .catch(error => {
-                        console.log("Une érreur est survenue lors de la sélection des commentaires.");
+                        console.log("Une érreur est survenue lors de la sélection des commentaires.", error);
                         res.status(400).json({msg: "Mot de passe ou email incorrect.", error: error.message})
                     })
                 }
             })
             .catch(error => {
-                console.log("Une érreur est survenue lors de la sélection des commentaires.");
+                console.log("Une érreur est survenue lors de la sélection des commentaires.", error);
                 res.status(400).json({msg: "Mot de passe ou email incorrect.", error: error.message})
             })
         }catch (error) {
@@ -214,6 +215,7 @@ class commentaireContoller{
      * @memberof commentaireContoller
      */
     static async getAllInfoComment(req, res){
+
         try{
             User.findOne({_id:req.auth.user_id, email: req.auth.user_email})
             .then(auth => {
@@ -233,14 +235,23 @@ class commentaireContoller{
                         .then(commentAndUser => {
                             res.status(200).json({msg: "find", data: [coment, commentAndUser]})
                         })
+                        .catch(error => {
+                            console.log("Une érreur est survenue lors de la sélection des commentaires.", error);
+                            res.status(400).json({msg: "Mot de passe ou email incorrect.", error: error.message})
+                        })
+                    })
+                    .catch(error => {
+                        console.log("Une érreur est survenue lors de la sélection des commentaires.", error);
+                        res.status(400).json({msg: "Mot de passe ou email incorrect.", error: error.message})
                     })
                 }
             })
             .catch(error => {
-                console.log("Une érreur est survenue lors de la sélection des commentaires.");
+                console.log("Une érreur est survenue lors de la sélection des commentaires.", error);
                 res.status(400).json({msg: "Mot de passe ou email incorrect.", error: error.message})
             })
         }catch (error) {
+            console.log("Mot de passe ou email incorrect.", error);
             res.status(500).json({msg:"Mot de passe ou email incorrect.", error: error.message})
         }
     }

@@ -45,7 +45,10 @@ Router.get('/getCommentJoint', Auth, commentaireContoller.getCommentJoint);
 Router.post('/updateCommantaire', Auth, commentaireContoller.update);
 Router.get('/getAllInfoComment/:id', Auth, commentaireContoller.getAllInfoComment);
 
+
+
 Router.post('/createLike', Auth, LikeController.create);
+Router.get('/getLikeByCommentateur/:commentateur', Auth, LikeController.getLikeByCommentateur);
 
 Router.post('/login', LoginController.login);
 
