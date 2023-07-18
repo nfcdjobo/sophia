@@ -2,6 +2,7 @@ const { static } = require("express");
 const Exposition = require("../models/expositionModel");
 const Like = require("../models/lileModel");
 const User = require("../models/userModel");
+const Commentaire = require("../models/commentaireModel")
 
 class LikeController{
     /**
@@ -86,7 +87,17 @@ class LikeController{
                         }
                     )
                     .then(succes => {
-                        res.status(200).json({msg: "Requête réussie", data : succes})
+
+                        Commentaire.find({commentateur: [req.params.commentateur]})
+                        .populate({
+                            path:"exposition",
+                            populate:{
+                                path: "user_id"
+                            }
+                        })
+                        .then(commentBy => {
+                            res.status(200).json({msg: "Requête réussie", data : succes, comment: commentBy})
+                        })
                     })
                     .catch(error => {
                         console.log("Une érreur est survenue lors de la sélection.", error);
