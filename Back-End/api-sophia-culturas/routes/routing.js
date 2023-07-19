@@ -42,6 +42,7 @@ Router.get('/getAllComment', Auth, commentaireContoller.getAllComment);
 //Router.get('/getCommentById/:id', Auth, commentaireContoller.getById);
 Router.get('/getCommentByAutor', Auth, commentaireContoller.getCommentByAutor);
 Router.get('/getCommentJoint', Auth, commentaireContoller.getCommentJoint);
+Router.get('/getCommentLireJoint', Auth, commentaireContoller.getCommentLireJoint);
 Router.post('/updateCommantaire', Auth, commentaireContoller.update);
 Router.get('/getAllInfoComment/:id', Auth, commentaireContoller.getAllInfoComment);
 

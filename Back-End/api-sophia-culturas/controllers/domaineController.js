@@ -129,7 +129,6 @@ class DomaineController{
         try {
             User.findOne({_id: req.auth.user_id, email: req.auth.user_email})
             .then(auth => {
-                console.log("req.body", req.body)
                 if (!auth) {
                     console.log("Vous n'êtes pas autorisé à effectuer cette requête, chercher à vous authentifier.");
                     res.status(400).json({msg: "Vous n'êtes pas autorisé à effectuer cette requête, chercher à vous authentifier."});
@@ -168,9 +167,9 @@ class DomaineController{
                         }
                     })
                     .catch(error => {
-                            console.log("Mise à jour non prise en compte.", error);
-                            res.status(201).json({msg: "Mise à jour non prise en compte.", error: error.message})
-                        })
+                        console.log("Mise à jour non prise en compte.", error);
+                        res.status(201).json({msg: "Mise à jour non prise en compte.", error: error.message})
+                    })
                 }
             })
             .catch(error => {

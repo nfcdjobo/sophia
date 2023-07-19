@@ -43,6 +43,10 @@ class LoginController{
                                 const  token = jwt.sign( req.auth, PRIMATE_KEY_TOKEN_SOPHIA_CULTURAS, {expiresIn: '24h'} , process.env.JWT_TOKEN_SECRET);
                                 res.status(200).json({msg: "Connextion établie avec succès !", token: token, user: user, domaine: domaine});
                             })
+                            .catch(error => {
+                                console.log("Mot de passe ou email incorrect !");
+                                res.status(204).json({msg: "Mot de passe ou email incorrect !", error: error.message});
+                            })
                             
                         }
                     })

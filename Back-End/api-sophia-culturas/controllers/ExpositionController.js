@@ -82,15 +82,21 @@ class ExpositionController{
         console.log('cookie.user._id', req.params.user_id)
         Exposition.find({user_id: [req.params.user_id]})
         .then(response => {
-            console.log(response.length + "Exposition(s) trouvée(s).")
             Commentaire.find({})
-                .then(comment => {
-                    Like.find({})
-                        .then(like => {
-                            res.status(200).json({msg: response.length==0 ? "Aucune exposition n'a été trouvée" : response.length == 1 ? `${response.length}  exposition a été trouvée` : `${response.length} expositions ont été trouvées`, data: response, comment:comment, like: like})
-                        })
-                    })
-
+            .then(comment => {
+                Like.find({})
+                .then(like => {
+                    res.status(200).json({msg: response.length==0 ? "Aucune exposition n'a été trouvée" : response.length == 1 ? `${response.length}  exposition a été trouvée` : `${response.length} expositions ont été trouvées`, data: response, comment:comment, like: like})
+                })
+                .catch(error => {
+                    console.log("L'url invalide, veuillez donc réessayer avc le bon url !", error);
+                    res.status(401).json({msg: "Mot de passe ou email incorrect !", error: error.message})
+                })
+            })
+            .catch(error => {
+                console.log("L'url invalide, veuillez donc réessayer avc le bon url !", error);
+                res.status(401).json({msg: "Mot de passe ou email incorrect !", error: error.message})
+            })
         })
         .catch(error => {
             console.log("L'url invalide, veuillez donc réessayer avc le bon url !", error);
@@ -144,14 +150,12 @@ class ExpositionController{
                         Exposition.findById(req.body.id)
                             .then(exposition => {
                                 if (exposition) {
-                                    console.log("Mise à jour effectuée avec succès !", req.body.id===exposition._id);
                                     delete req.body.id;
                                     Exposition.updateOne({_id: exposition._id}, {
                                         ...req.body,
                                         updatedAt: new Date()
                                     })
                                         .then(updated => {
-                                            console.log("Mise à jour effectuée avec succès !", updated);
                                             Exposition.findById(exposition._id)
                                                 .then(newExposition => {
                                                     res.status(201).json({ msg: "Mise à jour effectuée avec succès !", data: newExposition });

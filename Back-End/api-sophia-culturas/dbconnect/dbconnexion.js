@@ -113,3 +113,5 @@ mongoose.connect(`mongodb+srv://nfcdjobo:nfcdjobo@sophiaculturas.xkymogx.mongodb
     console.log(`Connexin non établie: \n ${error}`);
 })
 module.exports = mongoose;
+
+

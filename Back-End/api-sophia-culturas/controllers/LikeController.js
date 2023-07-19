@@ -26,7 +26,7 @@ class LikeController{
                                 const likk = new Like({...req.body});
                                 likk.save()
                                 .then(ok => {
-                                    console.log('OK, OK', ok)
+                                    console.log('OK, OK')
                                     res.status(200).json({msg: "Vous avez aimé", data: ok});
                                 })
                                 .catch(error => {

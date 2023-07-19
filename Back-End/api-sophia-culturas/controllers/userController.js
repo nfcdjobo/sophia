@@ -101,8 +101,7 @@ class UserController{
             // if(req.file){req.body.photo=`${req.protocol}://${req.get('host')}/${req.file.path}`};
             delete req.body.id;
             console.log(auth.photo);
-            const ancienFichier = auth.photo.split("/stockage\\")[1];
-            console.log("ancienFichier ancienFichier ancienFichier", ancienFichier);
+            const ancienFichier = auth.photo.split("/stockage\\")[1];;
             if(req.file){req.body.photo = req.protocol+"://"+req.get('host')+"/"+req.file.path};
             User.updateOne({_id:req.auth.user_id, email: req.auth.user_email}, {... req.body, updatedAt: new Date()})
             .then(upd => {
@@ -159,7 +158,7 @@ class UserController{
                 User.findById(req.params.id)
                 .then(auteur => {
                     if(auteur){
-                        console.log(auteur);
+                        console.log("Requête prise en compte.");
                         res.status(200).json({auteur: auteur})
                     }else{
                         res.status(201).json({msg: "Cette exposition n'a pas d'auteur."})

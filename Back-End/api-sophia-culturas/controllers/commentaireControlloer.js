@@ -128,36 +128,75 @@ class commentaireContoller{
     static async getCommentJoint(req, res){
         try{
             User.findOne({_id:req.auth.user_id, email: req.auth.user_email})
-                .then(auth => {
-                    if(!auth){console.log("Vous n'êtes pas autorisé à effectuer cette requête, chercher à vous authentifier.");
-                        res.status(400).json({msg: "Vous n'êtes pas autorisé à effectuer cette requête, chercher à vous authentifier."})
-                    }else{
+            .then(auth => {
+                if(!auth){console.log("Vous n'êtes pas autorisé à effectuer cette requête, chercher à vous authentifier.");
+                    res.status(400).json({msg: "Vous n'êtes pas autorisé à effectuer cette requête, chercher à vous authentifier."})
+                }else{
+                    Commentaire.find({auteur: req.auth.user_id, statut: 1})
+                    .populate({
+                        path:"exposition",
+                        populate:{
+                            path: "user_id"
+                        }
+                    })
+                    //.populate('commentateu')
+                    .then(coment =>{
                         Commentaire.find({auteur: req.auth.user_id, statut: 1})
-                        .populate({
-                            path:"exposition",
-                            populate:{
-                                path: "user_id"
-                            }
+                        .populate("commentateur")
+                        .then(commentAndUser => {
+                            res.status(200).json({msg: "find", data: [coment, commentAndUser]});
                         })
-                        //.populate('commentateu')
-                        .then(coment =>{
-                            Commentaire.find({auteur: req.auth.user_id, statut: 1})
-                            .populate("commentateur")
-                            .then(commentAndUser => {
-                                res.status(200).json({msg: "find", data: [coment, commentAndUser]})
-                            })
-                        })
-                    }
-                })
-                .catch(error => {
-                    console.log("Une érreur est survenue lors de la sélection des commentaires.", error);
-                    res.status(400).json({msg: "Mot de passe ou email incorrect.", error: error.message})
-                })
-
+                    })
+                }
+            })
+            .catch(error => {
+                console.log("Une érreur est survenue lors de la sélection des commentaires.", error);
+                res.status(400).json({msg: "Mot de passe ou email incorrect.", error: error.message});
+            })
         }catch (error) {
-            res.status(500).json({msg:"Mot de passe ou email incorrect.", error: error.message})
+            res.status(500).json({msg:"Mot de passe ou email incorrect.", error: error.message});
         }
     }
+
+
+    /**
+     *
+     * @static
+     * @param {Express.Request} req
+     * @param {Express.Response} res
+     * @memberof commentaireContoller
+     */
+    static async getCommentLireJoint(req, res){
+        try{
+            User.findOne({_id:req.auth.user_id, email: req.auth.user_email})
+            .then(auth => {
+                if(!auth){console.log("Vous n'êtes pas autorisé à effectuer cette requête, chercher à vous authentifier.");
+                    res.status(400).json({msg: "Vous n'êtes pas autorisé à effectuer cette requête, chercher à vous authentifier."})
+                }else{
+                    Commentaire.find({auteur: req.auth.user_id, statut: 0})
+                    .populate("exposition")
+                    .populate("commentateur")
+                    .then(comment =>{
+                        console.log("Requête a été bien effectuée avec succès.")
+                        res.status(200).json({msg: "find", data: comment});
+                    })
+                    .catch(error => {
+                        console.log("Une érreur est survenue lors de la sélection des commentaires.", error);
+                        res.status(400).json({msg: "Mot de passe ou email incorrect.", error: error.message});
+                    })
+                }
+            })
+            .catch(error => {
+                console.log("Une érreur est survenue lors de la sélection des commentaires.", error);
+                res.status(400).json({msg: "Mot de passe ou email incorrect.", error: error.message});
+            })
+        }catch (error) {
+            res.status(500).json({msg:"Mot de passe ou email incorrect.", error: error.message});
+        }
+    }
+
+
+
 
     /**
      *
@@ -167,7 +206,6 @@ class commentaireContoller{
      * @memberof commentaireContoller
      */
     static  async update(req, res){
-        console.log("----------------------------------------------------------------------------")
         try{
             User.findOne({_id:req.auth.user_id, email: req.auth.user_email})
             .then(auth => {
