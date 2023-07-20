@@ -30,6 +30,7 @@ class DomaineController{
                             const newDomaine = new Domaine({... req.body, createdAt: new Date(), updatedAt: new Date()});
                             newDomaine.save()
                             .then(domaines=>{
+                                console.log(domaines)
                                 return res.status(200).json({msg: "Domaine ajoute avec succès", data: domaines});
                             })
                             .catch(error=>{

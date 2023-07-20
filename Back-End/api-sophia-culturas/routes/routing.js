@@ -9,6 +9,7 @@ const LoginController = require('../controllers/LoginController');
 const ExpositionController = require('../controllers/ExpositionController');
 const LikeController = require('../controllers/LikeController');
 const commentaireContoller = require('../controllers/commentaireControlloer');
+const RaccourirController = require('../controllers/RaccourirController');
 const Auth = require("../middlewares/Auth");
 const Telecharger = require("../middlewares/upload");
 
@@ -46,6 +47,9 @@ Router.get('/getCommentLireJoint', Auth, commentaireContoller.getCommentLireJoin
 Router.post('/updateCommantaire', Auth, commentaireContoller.update);
 Router.get('/getAllInfoComment/:id', Auth, commentaireContoller.getAllInfoComment);
 
+Router.post('/create', Telecharger, Auth,  RaccourirController.create);
+Router.post('/update', Auth, Telecharger, RaccourirController.update);
+Router.get('/getAll/:entite', RaccourirController.getAll);
 
 
 Router.post('/createLike', Auth, LikeController.create);
