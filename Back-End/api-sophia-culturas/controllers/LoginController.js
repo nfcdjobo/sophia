@@ -57,11 +57,11 @@ class LoginController{
                 }
             })
             .catch(error => {
-                console.log("Connexion échouée, réessayez plus tard !");
+                console.log("Connexion échouée, réessayez plus tard !22");
                 res.status(501).json({msg: "Connexion échouée, réessayez plus tard !", error: error.message});
             })
         } catch (error) {
-            console.log("Connexion échouée, réessayez plus tard !");
+            console.log("Connexion échouée, réessayez plus tard !12");
             res.status(501).json({msg: "Connexion échouée, réessayez plus tard !", error: error.message});
         }
     }

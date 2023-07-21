@@ -51,6 +51,12 @@ Router.post('/create', Telecharger, Auth,  RaccourirController.create);
 Router.post('/update', Auth, Telecharger, RaccourirController.update);
 Router.get('/getAll/:entite', RaccourirController.getAll);
 
+Router.post('/sendMessage', SendEmailController.sendMessage);
+Router.post('/updateMessage', Auth, SendEmailController.updateMessage);
+Router.get('/getMessageRead', Auth, SendEmailController.getMessageRead);
+Router.get('/getMessageNoRead', Auth, SendEmailController.getMessageNoRead)
+
+
 
 Router.post('/createLike', Auth, LikeController.create);
 Router.get('/getLikeByCommentateur/:commentateur', Auth, LikeController.getLikeByCommentateur);

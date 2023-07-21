@@ -27,6 +27,9 @@ const messagerieSchema = mongoose.Schema(
             type: String,
             required: true
         },
+        lecteur:[
+            {type: mongoose.Schema.Types.ObjectId, ref: User}
+        ],
         statut:{
             type: Number,
             default: 1,

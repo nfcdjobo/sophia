@@ -138,7 +138,6 @@ class ExpositionController{
      */
     static async uptate(req, res) {
         try {
-            console.log(req.auth)
             User.findOne({_id: req.auth.user_id, email: req.auth.user_email})
                 .then(auth => {
                     console.log("req.body", req.body)
