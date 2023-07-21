@@ -80,20 +80,18 @@ class SendEmailController{
         try {
             User.findOne({_id: req.auth.user_id, email: req.auth.user_email})
             .then(auth => {
-                console.log("req.body", req.body)
                 if (!auth) {
                     console.log("Vous n'êtes pas autorisé à effectuer cette requête, chercher à vous authentifier.");
                     res.status(400).json({msg: "Vous n'êtes pas autorisé à effectuer cette requête, chercher à vous authentifier."});
                 } else {
                     Messagerie.find({statut: 1})
-                        .then(message=>{
-                            console.log("Lecture effectuée avec succès !");
-                            res.status(200).json({msg: "Lecture effectuée avec succès !", data: message})
-                        })
-                        .catch(error => {
-                            console.log("Lecture annulée", error);
-                            res.status(401).json({msg: "Mot de passe ou email incorrect !"});
-                        })
+                    .then(message=>{
+                        res.status(200).json({msg: "Lecture effectuée avec succès !", data: message})
+                    })
+                    .catch(error => {
+                        console.log("Lecture annulée", error);
+                        res.status(401).json({msg: "Mot de passe ou email incorrect !"});
+                    })
                 }
             })
             .catch(error => {
@@ -116,20 +114,18 @@ class SendEmailController{
         try {
             User.findOne({_id: req.auth.user_id, email: req.auth.user_email})
                 .then(auth => {
-                    console.log("req.body", req.body)
                     if (!auth) {
                         console.log("Vous n'êtes pas autorisé à effectuer cette requête, chercher à vous authentifier.");
                         res.status(400).json({msg: "Vous n'êtes pas autorisé à effectuer cette requête, chercher à vous authentifier."});
                     } else {
                         Messagerie.find({statut: 0})
-                            .then(message=>{
-                                console.log("Lecture effectuée avec succès !");
-                                res.status(200).json({msg: "Lecture effectuée avec succès !", data: message})
-                            })
-                            .catch(error => {
-                                console.log("Lecture annulée", error);
-                                res.status(401).json({msg: "Mot de passe ou email incorrect !"});
-                            })
+                        .then(message=>{
+                            res.status(200).json({msg: "Lecture effectuée avec succès !", data: message})
+                        })
+                        .catch(error => {
+                            console.log("Lecture annulée", error);
+                            res.status(401).json({msg: "Mot de passe ou email incorrect !"});
+                        })
                     }
                 })
                 .catch(error => {
@@ -154,7 +150,6 @@ class SendEmailController{
         try {
             User.findOne({_id: req.auth.user_id, email: req.auth.user_email})
                 .then(auth => {
-                    console.log("req.body", req.body)
                     if (!auth) {
                         console.log("Vous n'êtes pas autorisé à effectuer cette requête, chercher à vous authentifier.");
                         res.status(400).json({msg: "Vous n'êtes pas autorisé à effectuer cette requête, chercher à vous authentifier."});
