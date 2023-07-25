@@ -18,6 +18,7 @@ class DomaineController{
         try {
             User.findOne({_id:req.auth.user_id, email: req.auth.user_email})
             .then(auth => {
+                console.log(req.body);
                 if(!auth){console.log("Vous n'êtes pas autorisé à effectuer cette requête, chercher à vous authentifier.");
                     res.status(400).json({msg: "Vous n'êtes pas autorisé à effectuer cette requête, chercher à vous authentifier."})
                 }else{
