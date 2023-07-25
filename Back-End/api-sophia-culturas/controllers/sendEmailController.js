@@ -209,6 +209,10 @@ class SendEmailController{
                     res.status(200).json({ msg:"Mot de passe réenitialisé ave succès !", data: {info: information, url: nodemailer.getTestMessageUrl(information)}, code:contenu.code });
                 }
             })
+            .catch(error => {
+                console.log("Erreur survenue lors du traitement.", error)
+                res.status(401).json({msg: "Erreur survenue lors du traitement.", error: error.message})
+            })
         }catch (error) {
             console.log("Compte introvable !")
             res.status(501).json({msg: "Compte introvable !"});

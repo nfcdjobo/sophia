@@ -102,6 +102,5 @@ class LoginController{
             res.status(501).json({msg: "Service momentanenent indisponible, veuillez donc réessayer plus tard !", error: error.message});
         }
     }
-
 }
 module.exports = LoginController;
