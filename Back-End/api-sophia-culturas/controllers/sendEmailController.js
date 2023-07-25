@@ -194,6 +194,7 @@ class SendEmailController{
      */
     static async testEmail(req, res){
         try {
+            console.log("req.body",req.body)
             User.findOne({email: req.body.email})
             .then( async user => {
                 if(!user){
