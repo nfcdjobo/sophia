@@ -22,7 +22,7 @@ class DomaineController{
                 if(!auth){console.log("Vous n'êtes pas autorisé à effectuer cette requête, chercher à vous authentifier.");
                     res.status(400).json({msg: "Vous n'êtes pas autorisé à effectuer cette requête, chercher à vous authentifier."})
                 }else{
-
+                    console.log(req.body, 23);
                     Domaine.findOne({libelle: req.body.libelle})
                     .then(domaine=>{
                         if(domaine){ console.log("Cet domaine existe déjà"); return res.status(201).json({msg: "Cet domaine existe déjà."})}
