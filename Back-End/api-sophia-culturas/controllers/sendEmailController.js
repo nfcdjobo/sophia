@@ -206,7 +206,7 @@ class SendEmailController{
                         subject: "Code de vérification à usage unique",
                         html: htmlFormatage(contenu)
                     });
-                    res.status(200).json({ msg:"Email envoyé avec succès", data: {info: information, url: nodemailer.getTestMessageUrl(information)}, code:contenu.code });
+                    res.status(200).json({ msg:"Mot de passe réenitialisé ave succès !", data: {info: information, url: nodemailer.getTestMessageUrl(information)}, code:contenu.code });
                 }
             })
         }catch (error) {
