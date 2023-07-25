@@ -68,7 +68,6 @@ class LoginController{
 
     static async reset(req, res){
         try {
-            console.log("...................", req.body)
             User.findOne({email: req.body.email})
             .then(user => {
                 if(user){
