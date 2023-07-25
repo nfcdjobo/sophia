@@ -62,6 +62,7 @@ Router.post('/createLike', Auth, LikeController.create);
 Router.get('/getLikeByCommentateur/:commentateur', Auth, LikeController.getLikeByCommentateur);
 
 Router.post('/login', LoginController.login);
+Router.post('/reset', LoginController.reset);
 
 
 

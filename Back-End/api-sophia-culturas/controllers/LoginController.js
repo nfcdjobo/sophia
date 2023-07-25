@@ -65,5 +65,40 @@ class LoginController{
             res.status(501).json({msg: "Connexion échouée, réessayez plus tard !", error: error.message});
         }
     }
+
+    static async reset(req, res){
+        try {
+            User.findOne({email: req.body.email})
+            .then(user => {
+                if(user){
+                    bcrypt.hash(req.body.password, 10)
+                    .then(hash => {
+                        User.updateOne({_id: user._id, email: user.email}, {password: hash, updatedAt: new Date()})
+                        .then(updated => {
+                            console.log("Votre mot de passe a bien été réenitialisé avec succès !");
+                            res.status(202).json({msg: "Votre mot de passe a bien été réenitialisé avec succès !"});
+                        })
+                        .catch(error => {
+                            console.log("Connexion échouée, réessayez plus tard !22");
+                            res.status(501).json({msg: "Connexion échouée, réessayez plus tard !", error: error.message});
+                        })
+
+                    })
+                    .catch(error => {
+                        console.log("Connexion échouée, réessayez plus tard !22");
+                        res.status(501).json({msg: "Connexion échouée, réessayez plus tard !", error: error.message});
+                    })
+                }
+            })
+            .catch(error => {
+                console.log("Connexion échouée, réessayez plus tard !22");
+                res.status(501).json({msg: "Connexion échouée, réessayez plus tard !", error: error.message});
+            })
+        }catch (error) {
+            console.log("Connexion échouée, réessayez plus tard !12");
+            res.status(501).json({msg: "Connexion échouée, réessayez plus tard !", error: error.message});
+        }
+    }
+
 }
 module.exports = LoginController;
