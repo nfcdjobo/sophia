@@ -54,7 +54,8 @@ Router.get('/getAll/:entite', RaccourirController.getAll);
 Router.post('/sendMessage', SendEmailController.sendMessage);
 Router.post('/updateMessage', Auth, SendEmailController.updateMessage);
 Router.get('/getMessageRead', Auth, SendEmailController.getMessageRead);
-Router.get('/getMessageNoRead', Auth, SendEmailController.getMessageNoRead)
+Router.get('/getMessageNoRead', Auth, SendEmailController.getMessageNoRead);
+Router.post('/testEmail', SendEmailController.testEmail);
 
 
 

@@ -39,7 +39,7 @@ class SendEmailController{
                 to: req.body.email,
                 subject: "Code de vérification à usage unique",
                 html: htmlFormatage(contenu)
-            })
+            });
             res.status(200).json({ msg:"Email envoyé avec succès", data: {info: information, url: nodemailer.getTestMessageUrl(information)}, code:contenu.code });
         } catch (error) {
             console.log(error) ;
@@ -138,7 +138,6 @@ class SendEmailController{
         }
     }
 
-
     /**
      * @static
      * @param {Request} req
@@ -149,45 +148,72 @@ class SendEmailController{
     static async updateMessage(req, res){
         try {
             User.findOne({_id: req.auth.user_id, email: req.auth.user_email})
-                .then(auth => {
-                    if (!auth) {
-                        console.log("Vous n'êtes pas autorisé à effectuer cette requête, chercher à vous authentifier.");
-                        res.status(400).json({msg: "Vous n'êtes pas autorisé à effectuer cette requête, chercher à vous authentifier."});
-                    } else {
-                        Messagerie.findById(req.body.id)
-                        .then(messag=>{
-                            if(!messag){
-                                console.log("Ce message n'existe pas");
-                                res.status(401).json({msg: "Mot de passe ou email incorrect !"})
-                            }else {
-                                Messagerie.updateOne({_id: messag._id, statut: 1}, {statut: 0, lecteur: req.auth.user_id, updatedAt: new Date()})
-                                .then(updated => {
-                                    console.log("Mise à jour effectuée avec succès !");
-                                    res.status(201).json({msg:"Mise à jour effectuée avec succès !"});
-                                })
-                                .catch(error => {
-                                    console.log("Mise à jour annulée", error);
-                                    res.status(401).json({msg: "Mot de passe ou email incorrect !"});
-                                })
-                            }
-                        })
-                        .catch(error => {
-                            console.log("Mise à jour annulée", error);
-                            res.status(401).json({msg: "Mot de passe ou email incorrect !"});
-                        })
-                    }
-                })
-                .catch(error => {
-                    console.log("Mise à jour annulée", error);
-                    res.status(401).json({msg: "Mot de passe ou email incorrect !"});
-                })
+            .then(auth => {
+                if (!auth) {
+                    console.log("Vous n'êtes pas autorisé à effectuer cette requête, chercher à vous authentifier.");
+                    res.status(400).json({msg: "Vous n'êtes pas autorisé à effectuer cette requête, chercher à vous authentifier."});
+                } else {
+                    Messagerie.findById(req.body.id)
+                    .then(messag=>{
+                        if(!messag){
+                            console.log("Ce message n'existe pas");
+                            res.status(401).json({msg: "Mot de passe ou email incorrect !"})
+                        }else {
+                            Messagerie.updateOne({_id: messag._id, statut: 1}, {statut: 0, lecteur: req.auth.user_id, updatedAt: new Date()})
+                            .then(updated => {
+                                console.log("Mise à jour effectuée avec succès !");
+                                res.status(201).json({msg:"Mise à jour effectuée avec succès !"});
+                            })
+                            .catch(error => {
+                                console.log("Mise à jour annulée", error);
+                                res.status(401).json({msg: "Mot de passe ou email incorrect !"});
+                            })
+                        }
+                    })
+                    .catch(error => {
+                        console.log("Mise à jour annulée", error);
+                        res.status(401).json({msg: "Mot de passe ou email incorrect !"});
+                    })
+                }
+            })
+            .catch(error => {
+                console.log("Mise à jour annulée", error);
+                res.status(401).json({msg: "Mot de passe ou email incorrect !"});
+            })
         }catch (error) {
             console.log("Mise à jour annulée", error);
             res.status(500).json({msg: "Mot de passe ou email incorrect !"});
         }
     }
 
-
+    /**
+     * @static
+     * @param {Request} req
+     * @param {Response} res
+     * @memberof SendEmailController
+     */
+    static async testEmail(req, res){
+        try {
+            User.findOne({email: req.body.email})
+            .then( async user => {
+                if(!user){
+                    console.log("Compte introvable !")
+                    res.status(501).json({msg: "Compte introvable !"});
+                }else{
+                    const information = await transporteur.sendMail({
+                        from: '"Sophia-Culturas" <sophia-culturas@gmail.com>',
+                        to: req.body.email,
+                        subject: "Code de vérification à usage unique",
+                        html: htmlFormatage(contenu)
+                    });
+                    res.status(200).json({ msg:"Email envoyé avec succès", data: {info: information, url: nodemailer.getTestMessageUrl(information)}, code:contenu.code });
+                }
+            })
+        }catch (error) {
+            console.log("Compte introvable !")
+            res.status(501).json({msg: "Compte introvable !"});
+        }
+    }
 
 }
 

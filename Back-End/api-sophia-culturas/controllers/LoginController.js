@@ -79,24 +79,26 @@ class LoginController{
                             res.status(202).json({msg: "Votre mot de passe a bien été réenitialisé avec succès !"});
                         })
                         .catch(error => {
-                            console.log("Connexion échouée, réessayez plus tard !22");
-                            res.status(501).json({msg: "Connexion échouée, réessayez plus tard !", error: error.message});
+                            console.log("Service momentanenent indisponible, veuillez donc réessayer plus tard !");
+                            res.status(501).json({msg: "Service momentanenent indisponible, veuillez donc réessayer plus tard !", error: error.message});
                         })
-
                     })
                     .catch(error => {
-                        console.log("Connexion échouée, réessayez plus tard !22");
-                        res.status(501).json({msg: "Connexion échouée, réessayez plus tard !", error: error.message});
+                        console.log("Service momentanenent indisponible, veuillez donc réessayer plus tard !");
+                        res.status(501).json({msg: "Service momentanenent indisponible, veuillez donc réessayer plus tard !", error: error.message});
                     })
+                }else{
+                    console.log("Service momentanenent indisponible, veuillez donc réessayer plus tard !");
+                    res.status(501).json({msg: "Service momentanenent indisponible, veuillez donc réessayer plus tard !", error: error.message});
                 }
             })
             .catch(error => {
-                console.log("Connexion échouée, réessayez plus tard !22");
-                res.status(501).json({msg: "Connexion échouée, réessayez plus tard !", error: error.message});
+                console.log("Email incorrect");
+                res.status(501).json({msg: "Email incorrect", error: error.message});
             })
         }catch (error) {
-            console.log("Connexion échouée, réessayez plus tard !12");
-            res.status(501).json({msg: "Connexion échouée, réessayez plus tard !", error: error.message});
+            console.log("Service momentanenent indisponible, veuillez donc réessayer plus tard !");
+            res.status(501).json({msg: "Service momentanenent indisponible, veuillez donc réessayer plus tard !", error: error.message});
         }
     }
 
