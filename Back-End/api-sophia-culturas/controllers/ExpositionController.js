@@ -66,7 +66,8 @@ class ExpositionController{
                     else{
                         res.status(200).json({msg:"L'exposition a bien été trouvée.", data: exposition})
                     }
-                }).catch((error) => {
+                })
+                .catch((error) => {
                     console.log("Cette exposition n'existe pas:", error.message)
                     res.status(500).json({msg:"Cette exposition n'existe pas:", error: error})
                 });
@@ -108,21 +109,21 @@ class ExpositionController{
     static async getAll(req, res){
         try{
             Exposition.find({})
-                .populate('user_id')
-                .then(response => {
-                    Commentaire.find({})
-                        .then(comment => {
-                            Like.find({})
-                            .then(like => {
-                                console.log(response.length + "Exposition(s) trouvée(s).")
-                                res.status(200).json({msg: response.length==0 ? "Aucune exposition n'a été trouvée" : response.length == 1 ? `${response.length} exposition a été trouvée` : `${response.length} expositions ont été trouvées`, data: response, comment: comment, like: like});
-                            })
-                        })
+            .populate('user_id')
+            .then(response => {
+                Commentaire.find({})
+                .then(comment => {
+                    Like.find({})
+                    .then(like => {
+                        console.log(response.length + "Exposition(s) trouvée(s).")
+                        res.status(200).json({msg: response.length==0 ? "Aucune exposition n'a été trouvée" : response.length == 1 ? `${response.length} exposition a été trouvée` : `${response.length} expositions ont été trouvées`, data: response, comment: comment, like: like});
                     })
-                .catch(error => {
-                    console.log("L'url invalide, veuillez donc réessayer avc le bon url !", error.message);
-                    res.status(401).json({msg: "L'url invalide, veuillez donc réessayer avc le bon url !"});
                 })
+            })
+            .catch(error => {
+                console.log("L'url invalide, veuillez donc réessayer avc le bon url !", error.message);
+                res.status(401).json({msg: "L'url invalide, veuillez donc réessayer avc le bon url !"});
+            })
         }catch (error) {
             console.log("L'url invalide, veuillez donc réessayer avc le bon url !", error.message);
             res.status(401).json({msg: "L'url invalide, veuillez donc réessayer avc le bon url !"});
