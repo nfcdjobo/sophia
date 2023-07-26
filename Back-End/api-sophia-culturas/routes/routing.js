@@ -34,7 +34,7 @@ Router.post("/updateUser", Auth, Telecharger, UserController.update);
 
 Router.post('/createExposition', Auth, Telecharger, ExpositionController.create);
 Router.get('/getExpositionByAutor/:user_id', ExpositionController.getExpositionByAutor);
-Router.get('/getByIdExposition/:id', Auth, ExpositionController.getById);
+Router.get('/getExpositionById/:id', Auth, ExpositionController.getById);
 Router.get('/getAllExposition', ExpositionController.getAll);
 Router.post('/updateExposition', Auth, Telecharger, ExpositionController.uptate);
 

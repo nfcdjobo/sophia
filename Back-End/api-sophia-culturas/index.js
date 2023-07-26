@@ -22,7 +22,7 @@ app.use((req, res, next) => {
 
 app.use('/stockage', express.static(path.join(__dirname, 'stockage')));
 
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3005;
 const routing = require('./routes/routing');
 app.use(routing);
 const {mongoose} = require('./dbconnect/dbconnexion');
