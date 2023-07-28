@@ -11,39 +11,33 @@ class commentaireContoller{
      * @memberof commentaireContoller
      */
     static async create(req, res){
-        console.log(req.body)
         try {
             User.findOne({_id:req.auth.user_id, email: req.auth.user_email})
             .then(auth => {
-                if(!auth){console.log("Vous n'êtes pas autorisé à effectuer cette requête, chercher à vous authentifier.");
-                    res.status(400).json({msg: "Vous n'êtes pas autorisé à effectuer cette requête, chercher à vous authentifier."})
+                if(!auth){
+                    res.status(400).json({msg: "Vous n'êtes pas autorisé à effectuer cette requête, chercher à vous authentifier."});
                 }else{
                     Exposition.findById(req.body.exposition)
                     .then(exposition=>{
                         if(exposition){
                             new Commentaire({...req.body}).save()
                             .then(comment => {
-                                console.log("Commentaire ajouté avec succès");
                                 res.status(200).json({msg: "Commentaire ajouté avec succès.", data: comment});
                             })
                             .catch(error => {
-                                console.log("Erreur survenue, commentaire non pris en compte.", error);
-                                res.status(401).json({msg: "Erreur survenue, commentaire non pris en compte.", error: error.message})
+                                res.status(401).json({msg: "Erreur survenue, commentaire non pris en compte.", error: error.message});
                             })
                         }else{
-                            console.log("Cette exposition n'existe pas.");
-                            res.status(401).json({msg: "Cette exposition n'existe pas."})
+                            res.status(401).json({msg: "Cette exposition n'existe pas."});
                         }
                     })
                     .catch(error => {
-                        console.log("Erreur survenue, commentaire non pris en compte.", error);
-                        res.status(401).json({msg: "Erreur survenue, commentaire non pris en compte.", error: error.message})
+                        res.status(401).json({msg: "Erreur survenue, commentaire non pris en compte.", error: error.message});
                     })
                 }
             })
             .catch(error => {
-                console.log("Une érreur est survenue lors de la mise à jour.");
-                res.status(400).json({msg: "Une érreur est survenue lors de la mise à jour.", error: error.message})
+                res.status(400).json({msg: "Une érreur est survenue lors de la mise à jour.", error: error.message});
             })
         } catch (error) {
             res.status(500).json({msg:"Une erreur est survenue lors de l'enregistrememnt", error: error.message})
@@ -61,24 +55,21 @@ class commentaireContoller{
         try{
             User.findOne({_id:req.auth.user_id, email: req.auth.user_email})
             .then(auth => {
-                if(!auth){console.log("Vous n'êtes pas autorisé à effectuer cette requête, chercher à vous authentifier.");
-                    res.status(400).json({msg: "Vous n'êtes pas autorisé à effectuer cette requête, chercher à vous authentifier."})
+                if(!auth){
+                    res.status(400).json({msg: "Vous n'êtes pas autorisé à effectuer cette requête, chercher à vous authentifier."});
                 }else{
                     Commentaire.find({auteur: req.auth.user_id, statut: 1})
                     .then(comment => {
-                        res.status(200).json({msg: "Requête prise en compte", data: comment})
+                        res.status(200).json({msg: "Requête prise en compte", data: comment});
                     })
                     .catch(error => {
-                        console.log("Une érreur est survenue lors de la mise à jour.");
-                        res.status(400).json({msg: "Mot de passe ou email incorrect.", error: error.message})
+                        res.status(400).json({msg: "Mot de passe ou email incorrect.", error: error.message});
                     })
                 }
             })
             .catch(error => {
-                console.log("Une érreur est survenue lors de la sélection des commentaires.", error);
-                res.status(400).json({msg: "Mot de passe ou email incorrect.", error: error.message})
+                res.status(400).json({msg: "Mot de passe ou email incorrect.", error: error.message});
             })
-
         }catch (error) {
             res.status(500).json({msg:"Mot de passe ou email incorrect.", error: error.message})
         }
@@ -95,22 +86,20 @@ class commentaireContoller{
         try{
             User.findOne({_id:req.auth.user_id, email: req.auth.user_email})
                 .then(auth => {
-                    if(!auth){console.log("Vous n'êtes pas autorisé à effectuer cette requête, chercher à vous authentifier.");
-                        res.status(400).json({msg: "Vous n'êtes pas autorisé à effectuer cette requête, chercher à vous authentifier."})
+                    if(!auth){
+                        res.status(400).json({msg: "Vous n'êtes pas autorisé à effectuer cette requête, chercher à vous authentifier."});
                     }else{
                         Commentaire.find({statut: 1})
                         .then(comment => {
                             res.status(200).json({msg: "Requête prise en compte", data: comment.filter(item => item.auteur === req.auth.user_id)})
                         })
                         .catch(error => {
-                            console.log("Une érreur est survenue lors de la mise à jour.");
-                            res.status(400).json({msg: "Mot de passe ou email incorrect.", error: error.message})
+                            res.status(400).json({msg: "Mot de passe ou email incorrect.", error: error.message});
                         })
                     }
                 })
                 .catch(error => {
-                    console.log("Une érreur est survenue lors de la sélection des commentaires.", error);
-                    res.status(400).json({msg: "Mot de passe ou email incorrect.", error: error.message})
+                    res.status(400).json({msg: "Mot de passe ou email incorrect.", error: error.message});
                 })
 
         }catch (error) {
@@ -129,8 +118,8 @@ class commentaireContoller{
         try{
             User.findOne({_id:req.auth.user_id, email: req.auth.user_email})
             .then(auth => {
-                if(!auth){console.log("Vous n'êtes pas autorisé à effectuer cette requête, chercher à vous authentifier.");
-                    res.status(400).json({msg: "Vous n'êtes pas autorisé à effectuer cette requête, chercher à vous authentifier."})
+                if(!auth){
+                    res.status(400).json({msg: "Vous n'êtes pas autorisé à effectuer cette requête, chercher à vous authentifier."});
                 }else{
                     Commentaire.find({auteur: req.auth.user_id, statut: 1})
                     .populate({
@@ -139,7 +128,6 @@ class commentaireContoller{
                             path: "user_id"
                         }
                     })
-                    //.populate('commentateu')
                     .then(coment =>{
                         Commentaire.find({auteur: req.auth.user_id, statut: 1})
                         .populate("commentateur")
@@ -150,7 +138,6 @@ class commentaireContoller{
                 }
             })
             .catch(error => {
-                console.log("Une érreur est survenue lors de la sélection des commentaires.", error);
                 res.status(400).json({msg: "Mot de passe ou email incorrect.", error: error.message});
             })
         }catch (error) {
@@ -170,31 +157,27 @@ class commentaireContoller{
         try{
             User.findOne({_id:req.auth.user_id, email: req.auth.user_email})
             .then(auth => {
-                if(!auth){console.log("Vous n'êtes pas autorisé à effectuer cette requête, chercher à vous authentifier.");
-                    res.status(400).json({msg: "Vous n'êtes pas autorisé à effectuer cette requête, chercher à vous authentifier."})
+                if(!auth){
+                    res.status(400).json({msg: "Vous n'êtes pas autorisé à effectuer cette requête, chercher à vous authentifier."});
                 }else{
                     Commentaire.find({auteur: req.auth.user_id, statut: 0})
                     .populate("exposition")
                     .populate("commentateur")
                     .then(comment =>{
-                        console.log("Requête a été bien effectuée avec succès.")
                         res.status(200).json({msg: "find", data: comment});
                     })
                     .catch(error => {
-                        console.log("Une érreur est survenue lors de la sélection des commentaires.", error);
                         res.status(400).json({msg: "Mot de passe ou email incorrect.", error: error.message});
                     })
                 }
             })
             .catch(error => {
-                console.log("Une érreur est survenue lors de la sélection des commentaires.", error);
                 res.status(400).json({msg: "Mot de passe ou email incorrect.", error: error.message});
             })
         }catch (error) {
             res.status(500).json({msg:"Mot de passe ou email incorrect.", error: error.message});
         }
     }
-
 
 
 
@@ -209,8 +192,8 @@ class commentaireContoller{
         try{
             User.findOne({_id:req.auth.user_id, email: req.auth.user_email})
             .then(auth => {
-                if(!auth){console.log("Vous n'êtes pas autorisé à effectuer cette requête, chercher à vous authentifier.");
-                    res.status(400).json({msg: "Vous n'êtes pas autorisé à effectuer cette requête, chercher à vous authentifier."})
+                if(!auth){
+                    res.status(400).json({msg: "Vous n'êtes pas autorisé à effectuer cette requête, chercher à vous authentifier."});
                 }else{
                     Commentaire.findById(req.body.id)
                     .then(comment => {
@@ -225,23 +208,20 @@ class commentaireContoller{
                                 })
                             })
                             .catch(error => {
-                                console.log("Une érreur est survenue lors de la sélection des commentaires.", error);
-                                res.status(400).json({msg: "Mot de passe ou email incorrect.", error: error.message})
+                                res.status(400).json({msg: "Mot de passe ou email incorrect.", error: error.message});
                             })
                         }
                     })
                     .catch(error => {
-                        console.log("Une érreur est survenue lors de la sélection des commentaires.", error);
-                        res.status(400).json({msg: "Mot de passe ou email incorrect.", error: error.message})
+                        res.status(400).json({msg: "Mot de passe ou email incorrect.", error: error.message});
                     })
                 }
             })
             .catch(error => {
-                console.log("Une érreur est survenue lors de la sélection des commentaires.", error);
-                res.status(400).json({msg: "Mot de passe ou email incorrect.", error: error.message})
+                res.status(400).json({msg: "Mot de passe ou email incorrect.", error: error.message});
             })
         }catch (error) {
-            res.status(500).json({msg:"Mot de passe ou email incorrect.", error: error.message})
+            res.status(500).json({msg:"Mot de passe ou email incorrect.", error: error.message});
         }
     }
 
@@ -257,8 +237,8 @@ class commentaireContoller{
         try{
             User.findOne({_id:req.auth.user_id, email: req.auth.user_email})
             .then(auth => {
-                if(!auth){console.log("Vous n'êtes pas autorisé à effectuer cette requête, chercher à vous authentifier.");
-                    res.status(400).json({msg: "Vous n'êtes pas autorisé à effectuer cette requête, chercher à vous authentifier."})
+                if(!auth){
+                    res.status(400).json({msg: "Vous n'êtes pas autorisé à effectuer cette requête, chercher à vous authentifier."});
                 }else{
                     Commentaire.findById(req.params.id)
                     .populate({
@@ -274,23 +254,19 @@ class commentaireContoller{
                             res.status(200).json({msg: "find", data: [coment, commentAndUser]})
                         })
                         .catch(error => {
-                            console.log("Une érreur est survenue lors de la sélection des commentaires.", error);
-                            res.status(400).json({msg: "Mot de passe ou email incorrect.", error: error.message})
+                            res.status(400).json({msg: "Mot de passe ou email incorrect.", error: error.message});
                         })
                     })
                     .catch(error => {
-                        console.log("Une érreur est survenue lors de la sélection des commentaires.", error);
-                        res.status(400).json({msg: "Mot de passe ou email incorrect.", error: error.message})
+                        res.status(400).json({msg: "Mot de passe ou email incorrect.", error: error.message});
                     })
                 }
             })
             .catch(error => {
-                console.log("Une érreur est survenue lors de la sélection des commentaires.", error);
-                res.status(400).json({msg: "Mot de passe ou email incorrect.", error: error.message})
+                res.status(400).json({msg: "Mot de passe ou email incorrect.", error: error.message});
             })
         }catch (error) {
-            console.log("Mot de passe ou email incorrect.", error);
-            res.status(500).json({msg:"Mot de passe ou email incorrect.", error: error.message})
+            res.status(500).json({msg:"Mot de passe ou email incorrect.", error: error.message});
         }
     }
 }

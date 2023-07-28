@@ -19,35 +19,39 @@ class DomaineController{
             User.findOne({_id:req.auth.user_id, email: req.auth.user_email})
             .then(auth => {
                 console.log(req.body);
-                if(!auth){console.log("Vous n'êtes pas autorisé à effectuer cette requête, chercher à vous authentifier.");
-                    res.status(400).json({msg: "Vous n'êtes pas autorisé à effectuer cette requête, chercher à vous authentifier."})
+                if(!auth){
+                    // console.log("Vous n'êtes pas autorisé à effectuer cette requête, chercher à vous authentifier.");
+                    res.status(400).json({msg: "Vous n'êtes pas autorisé à effectuer cette requête, chercher à vous authentifier."});
                 }else{
                     console.log(req.body, 23);
                     Domaine.findOne({libelle: req.body.libelle})
                     .then(domaine=>{
-                        if(domaine){ console.log("Cet domaine existe déjà"); return res.status(201).json({msg: "Cet domaine existe déjà."})}
+                        if(domaine){
+                            // console.log("Cet domaine existe déjà"); 
+                            return res.status(201).json({msg: "Cet domaine existe déjà."})
+                        }
                         else{
                             if(req.file){req.body.photo=`${req.protocol}://${req.get('host')}/${req.file.path}`};
                             const newDomaine = new Domaine({... req.body, createdAt: new Date(), updatedAt: new Date()});
                             newDomaine.save()
                             .then(domaines=>{
-                                console.log(domaines)
+                                // console.log(domaines)
                                 return res.status(200).json({msg: "Domaine ajoute avec succès", data: domaines});
                             })
                             .catch(error=>{
-                                console.log("error survenue lors de l'enregistrement du domaine", error.message);
+                                // console.log("error survenue lors de l'enregistrement du domaine", error.message);
                                 res.status(400).json({msg:"Erreur survenue lors de l'enregistrement du domaines, veuillez donc réessayer plus tard", error: error.message});
                             })
                         }
                     })
                     .catch(error=>{
-                        console.log("error survenue lors du traitement de la réquette", error.message);
+                        // console.log("error survenue lors du traitement de la réquette", error.message);
                         res.status(400).json({msg:"Erreur survenue lors du traitement de la réquette, veuillez donc réessayer plus tard", error: error.message})
                     })
                 }
             })
             .catch(error => {
-                console.log("Une érreur est survenue lors de la mise à jour.");
+                // console.log("Une érreur est survenue lors de la mise à jour.");
                 res.status(400).json({msg: "Une érreur est survenue lors de la mise à jour.", error: error.message})
             })
         } catch (error) {
@@ -62,7 +66,7 @@ class DomaineController{
                 res.status(200).json({msg: domaine.length==0 ? `Aucun domaine n'a été trouvé !` : (domaine.length==1 ? `${domaine.length} seul domaine a été trouvé !` : `${domaine.length} domaine ont été trouvés !`), data: domaine})
             })
             .catch(error => {
-                console.log("error survenue lors de l'enregistrement du domaine", error.message);
+                // console.log("error survenue lors de l'enregistrement du domaine", error.message);
                 res.status(400).json({msg:"Une érreur est survenue lors de de la récupération des domaines, veuillez donc réessayer plus tard", error: error.message});
             })
         } catch (error) {
@@ -77,7 +81,7 @@ class DomaineController{
                 res.status(200).json({msg: "Il domaine est trouvé.", data: domaine});
             })
             .catch(error => {
-                console.log(error)
+                // console.log(error)
                 res.status(400).json({msg: "Erreur survenue lors du traitemement", error: error});
             })
         } catch (error) {
@@ -97,12 +101,13 @@ class DomaineController{
         try {
             User.findOne({_id:req.auth.user_id, email: req.auth.user_email})
             .then(auth => {
-                if(!auth){console.log("Vous n'êtes pas autorisé à effectuer cette requête, chercher à vous authentifier.");
-                    res.status(400).json({msg: "Vous n'êtes pas autorisé à effectuer cette requête, chercher à vous authentifier."})
+                if(!auth){
+                    /*console.log("Vous n'êtes pas autorisé à effectuer cette requête, chercher à vous authentifier.");*/
+                    res.status(400).json({msg: "Vous n'êtes pas autorisé à effectuer cette requête, chercher à vous authentifier."});
                 }else{
                     Domaine.findById(req.params.id)
                     .then(domaine => {
-                        console.log("Réquête examinée avec succès.");
+                        /*console.log("Réquête examinée avec succès.");*/
                         res.status(200).json({msg: "Réquête examinée avec succès.", data:domaine});
                     })
                     .catch(error => {

@@ -18,7 +18,7 @@ const banniereSchema = mongoose.Schema(
         },
         photo:{
             type: String,
-            required: true
+            required: false
         },
         user_id:[
             {type: mongoose.Schema.Types.ObjectId, ref: User}
